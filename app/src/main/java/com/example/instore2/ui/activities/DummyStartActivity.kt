@@ -15,6 +15,7 @@ class DummyStartActivity : AppCompatActivity() {
 
         if (!SharePrefs.getInstance(this).getBoolean(SharePrefs.IS_INSTAGRAM_LOGIN)){
             startActivityForResult(Intent(this , LoginActivity::class.java) , 100)
+            startActivity(Intent(this , MainActivity::class.java))
         }
 
     }
