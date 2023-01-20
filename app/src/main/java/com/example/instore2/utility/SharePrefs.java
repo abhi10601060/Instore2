@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 public class SharePrefs {
 
-    public static String PREFERENCE = "VIDEODOWNLOADER";
+    public static String PREFERENCE = "Instore2";
     private SharedPreferences sharedPreferences;
     private static SharePrefs instance;
     public static String SESSIONID = "session_id";
