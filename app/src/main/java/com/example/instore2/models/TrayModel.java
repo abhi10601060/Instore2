@@ -16,6 +16,9 @@ public class TrayModel implements Serializable {
     @SerializedName("user")
     private UserModel user;
 
+    @SerializedName("num_results")
+    private int num_results;
+
     public String getId() {
         return this.id;
     }
@@ -46,5 +49,13 @@ public class TrayModel implements Serializable {
 
     public void setItems(List<ItemModel> list) {
         this.items = list;
+    }
+
+    public int getNum_results() {
+        return num_results;
+    }
+
+    public void setNum_results(int num_results) {
+        this.num_results = num_results;
     }
 }

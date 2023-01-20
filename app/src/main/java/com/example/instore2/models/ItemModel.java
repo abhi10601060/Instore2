@@ -55,7 +55,10 @@ public class ItemModel implements Serializable {
     @SerializedName("carousel_media_count")
     private int carousel_media_count;
     @SerializedName("carousel_media")
-    private List<CarouselItem> carousel_media;
+    private List<ItemModel> carousel_media;
+
+    @SerializedName("user")
+    private UserModel user;
 
     public long getTakenat() {
         return this.takenat;
@@ -241,11 +244,19 @@ public class ItemModel implements Serializable {
         this.carousel_media_count = carousel_media_count;
     }
 
-    public List<CarouselItem> getCarousel_media() {
+    public List<ItemModel> getCarousel_media() {
         return carousel_media;
     }
 
-    public void setCarousel_media(List<CarouselItem> carousel_media) {
+    public void setCarousel_media(List<ItemModel> carousel_media) {
         this.carousel_media = carousel_media;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
     }
 }

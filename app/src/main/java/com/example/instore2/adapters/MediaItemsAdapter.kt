@@ -15,7 +15,7 @@ import com.example.instore2.models.UserModel
 import de.hdodenhof.circleimageview.CircleImageView
 import org.w3c.dom.Text
 
-class MediaItemsAdapter(private val context: Context , private val user: UserModel) : ListAdapter<ItemModel, MediaItemsAdapter.ViewHolder>(DiffUtilCallBack()){
+class MediaItemsAdapter(private val context: Context , private val user: UserModel, private val downloadButtonClicked: DownloadButtonClicked) : ListAdapter<ItemModel, MediaItemsAdapter.ViewHolder>(DiffUtilCallBack()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.media_item_layout, parent , false)
@@ -36,6 +36,15 @@ class MediaItemsAdapter(private val context: Context , private val user: UserMod
             .into(holder.profileImage)
 
         holder.userName.text = user.username.toString()
+
+        holder.downloadButton.setOnClickListener(View.OnClickListener {
+            if (item.mediatype ==1){
+                downloadButtonClicked.onDownloadButtonClicked(item.mediatype , item.imageversions2.candidates.get(0).url ,user)
+            }
+            else{
+                downloadButtonClicked.onDownloadButtonClicked(item.mediatype , item.videoversions.get(0).url , user)
+            }
+        })
     }
 
 
@@ -45,6 +54,7 @@ class MediaItemsAdapter(private val context: Context , private val user: UserMod
 
         val profileImage = itemView.findViewById<CircleImageView>(R.id.mediaItem_user_profile_image)
         val userName = itemView.findViewById<TextView>(R.id.media_item_user_name)
+        val downloadButton = itemView.findViewById<ImageView>(R.id.media_item_download_btn)
 
     }
     class DiffUtilCallBack : androidx.recyclerview.widget.DiffUtil.ItemCallback<ItemModel>() {
@@ -56,5 +66,9 @@ class MediaItemsAdapter(private val context: Context , private val user: UserMod
             return oldItem.equals(newItem)
         }
 
+    }
+
+    interface DownloadButtonClicked{
+        fun onDownloadButtonClicked(mediaType : Int, url : String, user: UserModel)
     }
 }

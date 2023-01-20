@@ -1,6 +1,8 @@
 package com.example.instore2.repos
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.instore2.models.StoryModel
 import com.example.instore2.models.TrayModel
@@ -55,9 +57,18 @@ class MediaRepo(private val sharePrefs: SharePrefs , private val api : InstaServ
     private fun handleMediaItems(response: Response<TrayModel>) : Resource<TrayModel>{
         if (response.isSuccessful){
             if (response.body() != null){
+                Log.d("PREVIEW", "onCreate: response preview success")
                 return  Resource.Success<TrayModel>(response.body()!!)
             }
         }
+        Log.d("PREVIEW", "onCreate: response preview Error")
         return Resource.Error<TrayModel>(response.message())
+    }
+
+    suspend fun getUrlMediaItem(url : String){
+        Log.d("PREVIEW", "onCreate: repo getUrl called")
+        mediaItemsLivedata.postValue(Resource.Loading<TrayModel>())
+        val response = api.getUrlMediaItem(url , cookie , MOZILLA_USR_AGENT)
+        mediaItemsLivedata.postValue(handleMediaItems(response))
     }
 }

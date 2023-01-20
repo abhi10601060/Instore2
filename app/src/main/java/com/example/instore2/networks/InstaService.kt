@@ -16,6 +16,6 @@ interface InstaService {
     suspend fun getStoryMedia(@Url url : String, @Header("Cookie") str2 : String , @Header("User-Agent")  str3 : String) : Response<TrayModel>
 
     @GET
-    suspend fun getUrlData(@Url url : String, @Header("Cookie") str2 : String , @Header("User-Agent")  str3 : String) : Response<TrayModel>
+    suspend fun getUrlMediaItem(@Url url : String, @Header("Cookie") str2 : String , @Header("User-Agent")  str3 : String) : Response<TrayModel>
 
 }
