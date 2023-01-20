@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.instore2.R
+import com.example.instore2.adapters.MediaItemsAdapter
 import com.example.instore2.adapters.StoriesAdapter
 import com.example.instore2.models.StoryModel
+import com.example.instore2.models.TrayModel
 import com.example.instore2.models.UserModel
 import com.example.instore2.networks.Resource
 import com.example.instore2.utility.InstoreApp
@@ -18,6 +21,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked{
 
     lateinit var viewModel : MainViewModel
     lateinit var storiesRV : RecyclerView
+    lateinit var mediaItemsRV : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +34,12 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked{
 
         viewModel.getStories()
         setStories()
+        setMediaItem()
     }
 
     private fun initViews() {
         storiesRV = findViewById(R.id.story_profiles_RV)
+        mediaItemsRV = findViewById(R.id.media_items_RV)
     }
 
     private fun setStories(){
@@ -64,6 +70,35 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked{
     }
 
     override fun storyIconOnClicked(user: UserModel) {
-        TODO("Not yet implemented")
+        viewModel.getPersonalStories(user.pk)
     }
+
+    private fun setMediaItem(){
+        viewModel.mediaItems.observe(this , Observer {
+            when(it){
+
+                is Resource.Loading<TrayModel> -> {
+                    // TODO: show progress bar
+                }
+
+                is Resource.Error<TrayModel> -> {
+                    // TODO: show error dialogue
+                }
+
+                is Resource.Success<TrayModel> -> {
+                    if (it.data != null){
+                        val trayModel = it.data
+                        if (trayModel.items != null){
+                            val mediaItemsAdapter = MediaItemsAdapter(this , trayModel.user)
+                            mediaItemsAdapter.submitList(trayModel.items)
+                            mediaItemsRV.adapter = mediaItemsAdapter
+                            mediaItemsRV.layoutManager = GridLayoutManager(this , 2)
+                        }
+                    }
+                }
+
+            }
+        })
+    }
+
 }

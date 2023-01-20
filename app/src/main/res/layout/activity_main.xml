@@ -101,11 +101,14 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/media_items_RV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/btns_LL"
-            android:layout_margin="10dp"
-            android:id="@+id/stories_media_RV"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp" />
 
     </RelativeLayout>
 
