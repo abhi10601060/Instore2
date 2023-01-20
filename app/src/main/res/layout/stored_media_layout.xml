@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent"
+    android:layout_margin="10dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/white"
+    app:cardCornerRadius="10dp">
+
+    <RelativeLayout
+        android:layout_width="160dp"
+        android:layout_height="200dp"
+        android:id="@+id/parent_store_media">
+
+        <TextView
+            android:id="@+id/media_name"
+            android:layout_width="120dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="8dp"
+            android:text="account name"
+            android:textColor="@color/white"
+            android:textSize="12dp"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            />
+
+        <TextView
+            android:id="@+id/media_details"
+            android:layout_width="120dp"
+            android:layout_height="18dp"
+            android:layout_below="@id/media_name"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="19 mb | jan 10, 2022"
+            android:textSize="10dp" />
+
+        <ImageView
+            android:id="@+id/media_item_options_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="3dp"
+            android:src="@drawable/ic_baseline_options" />
+
+
+        <ImageView
+            android:id="@+id/stored_media_item_image"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
+            android:layout_below="@id/media_details"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="3dp"
+            android:src="@color/white" />
+
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
