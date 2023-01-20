@@ -4,15 +4,17 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
-    android:layout_margin="15dp"
+    app:strokeColor="@color/searchbar_text"
     app:strokeWidth="1dp"
-    app:strokeColor="@color/white"
-    app:cardCornerRadius="10dp">
+    android:layout_margin="15dp"
+    app:cardCornerRadius="10dp"
+    android:elevation="8dp">
 
     <RelativeLayout
         android:layout_width="160dp"
         android:layout_height="200dp"
-        android:id="@+id/parent_store_media">
+        android:id="@+id/parent_store_media"
+        android:background="@color/card_background">
 
         <TextView
             android:id="@+id/media_name"
@@ -21,7 +23,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="8dp"
             android:text="account name"
-            android:textColor="@color/white"
+            android:textColor="#f2f2f2"
             android:textSize="12dp"
             android:singleLine="true"
             android:textStyle="bold"
@@ -38,6 +40,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="19 mb | jan 10, 2022"
+            android:textColor="@color/searchbar_text"
             android:textSize="10dp" />
 
         <ImageView

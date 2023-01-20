@@ -4,13 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.StorageActivity">
+    tools:context=".ui.activities.StorageActivity"
+    android:background="@color/background">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Downloads"
+        android:id="@+id/storege_toolbar"
+        android:background="@color/indigo"
+        app:titleTextColor="@color/white"/>
+
 
 
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/storage_tablayout">
+        android:id="@+id/storage_tablayout"
+        android:layout_below="@+id/storege_toolbar"
+        android:background="@color/card_background"
+        app:tabTextColor="@color/white">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

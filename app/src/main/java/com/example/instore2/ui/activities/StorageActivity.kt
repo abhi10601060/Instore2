@@ -15,6 +15,7 @@ import com.example.instore2.adapters.StorageViewPagerAdapter
 import com.example.instore2.utility.InstoreApp
 import com.example.instore2.utility.StorageViewModelFactory
 import com.example.instore2.viewmodels.StorageViewModel
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayout
 
 class StorageActivity : AppCompatActivity() {
@@ -22,6 +23,7 @@ class StorageActivity : AppCompatActivity() {
     lateinit var tabLayout: TabLayout
     lateinit var viewPager: ViewPager2
     lateinit var storageViewModel: StorageViewModel
+    lateinit var toolbar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,8 @@ class StorageActivity : AppCompatActivity() {
 
         initViews()
         setupViewPagerWithTablayout()
+
+        setSupportActionBar(toolbar)
 
         val repo = (application as InstoreApp).storageRepo
         storageViewModel = ViewModelProvider( this , StorageViewModelFactory(repo)).get(StorageViewModel::class.java)
@@ -74,6 +78,7 @@ class StorageActivity : AppCompatActivity() {
     private fun initViews() {
         tabLayout = findViewById(R.id.storage_tablayout)
         viewPager = findViewById(R.id.storage_view_pager)
+        toolbar = findViewById(R.id.storege_toolbar)
     }
 
     private fun setupViewPagerWithTablayout() {
