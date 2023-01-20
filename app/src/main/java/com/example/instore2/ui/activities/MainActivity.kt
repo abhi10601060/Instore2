@@ -3,16 +3,19 @@ package com.example.instore2.ui.activities
 import android.Manifest
 import android.app.DownloadManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -29,6 +32,7 @@ import com.example.instore2.networks.Resource
 import com.example.instore2.utility.InstoreApp
 import com.example.instore2.viewmodels.MainViewModel
 import com.example.instore2.viewmodels.MainViewModelFactory
+import com.google.android.material.appbar.MaterialToolbar
 
 
 class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , MediaItemsAdapter.DownloadButtonClicked{
@@ -38,12 +42,15 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     lateinit var mediaItemsRV : RecyclerView
     lateinit var searchBar : EditText
     lateinit var btnPreview : Button
+    lateinit var toolbar: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initViews()
+
+        setSupportActionBar(toolbar)
 
         val mediaRepo = (application as InstoreApp).mediaRepo
         viewModel = ViewModelProvider(this , MainViewModelFactory(mediaRepo)).get(MainViewModel::class.java)
@@ -61,11 +68,18 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         })
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.storage_menu, menu)
+        return true
+    }
+
     private fun initViews() {
         storiesRV = findViewById(R.id.story_profiles_RV)
         mediaItemsRV = findViewById(R.id.media_items_RV)
         searchBar = findViewById(R.id.edt_search_url_bar)
         btnPreview = findViewById(R.id.btn_preview)
+        toolbar = findViewById(R.id.toolbar)
     }
 
     private fun setStories(){
@@ -200,4 +214,14 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId){
+            R.id.storage_menu_item -> {
+                val intent = Intent(this , StorageActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

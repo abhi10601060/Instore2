@@ -10,6 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="Instore2"
+            android:id="@+id/toolbar"
+            app:menu="@menu/storage_menu"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -17,7 +24,8 @@
             android:id="@+id/stories_text"
             android:textStyle="bold"
             android:textSize="18dp"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"
+            android:layout_below="@id/toolbar"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_profile_image"
