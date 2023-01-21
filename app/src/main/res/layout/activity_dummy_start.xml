@@ -4,12 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.DummyStartActivity">
+    tools:context=".ui.activities.DummyStartActivity"
+    android:background="@color/background">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DummyStartActivity"
-        android:layout_centerInParent="true"/>
+        android:id="@+id/Logo_RL"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
+        >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:elevation="16dp"
+            app:cardCornerRadius="15dp"
+            android:id="@+id/logo_card"
+            android:backgroundTint="@color/indigo"
+            >
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/instore_logo"
+                android:id="@+id/start_activity_logo"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="INSTORE"
+            android:layout_below="@id/logo_card"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:textSize="35dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:elevation="8dp"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:elevation="16dp"
+        android:text="Login via Instagram"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
 
 </RelativeLayout>
