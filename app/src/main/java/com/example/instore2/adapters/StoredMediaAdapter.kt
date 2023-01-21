@@ -14,6 +14,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.instore2.R
+import com.example.instore2.ui.activities.ViewMediaActivity
 import java.io.File
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -50,11 +51,12 @@ class StoredMediaAdapter(private val medias: MutableList<File>, private val cont
 
         holder.details.text = "${getMB(media)} mb | $date"
 
-//        holder.parent.setOnClickListener(View.OnClickListener {
-//            val intent = Intent(context , ViewContentActivity::class.java)
-//            intent.putExtra("path" , post.absolutePath)
-//            context.startActivity(intent)
-//        })
+        holder.parent.setOnClickListener(View.OnClickListener {
+            val intent = Intent(context , ViewMediaActivity::class.java)
+            intent.putExtra("parent" , "storage")
+            intent.putExtra("path" , media.absolutePath)
+            context.startActivity(intent)
+        })
     }
 
     private fun getMB(file: File): String {
