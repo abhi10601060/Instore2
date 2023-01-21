@@ -98,8 +98,9 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
                     if (it.data != null){
                         val storyModel = it.data
                         if (storyModel.tray != null){
+                            val stories = storyModel.tray.filter { it.user != null }
                             val storiesAdapter = StoriesAdapter(this , this)
-                            storiesAdapter.submitList(storyModel.tray)
+                            storiesAdapter.submitList(stories)
                             storiesRV.adapter = storiesAdapter
                         }
                     }
