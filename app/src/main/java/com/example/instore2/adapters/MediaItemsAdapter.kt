@@ -1,6 +1,7 @@
 package com.example.instore2.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.instore2.R
 import com.example.instore2.models.ItemModel
 import com.example.instore2.models.UserModel
+import com.example.instore2.ui.activities.ViewMediaActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import org.w3c.dom.Text
 
@@ -44,6 +46,18 @@ class MediaItemsAdapter(private val context: Context , private val user: UserMod
             else{
                 downloadButtonClicked.onDownloadButtonClicked(item.mediatype , item.videoversions.get(0).url , user)
             }
+        })
+
+        holder.image.setOnClickListener(View.OnClickListener {
+            val intent = Intent(context , ViewMediaActivity::class.java)
+            intent.putExtra("parent" , "main")
+            intent.putExtra("type" , item.mediatype)
+            when(item.mediatype){
+                1 -> {intent.putExtra("url" , item.imageversions2.candidates[0].url.toString())}
+
+                2 -> {intent.putExtra("url" , item.videoversions[0].url.toString())}
+            }
+            context.startActivity(intent)
         })
     }
 
