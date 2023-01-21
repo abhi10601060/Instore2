@@ -17,7 +17,7 @@ class InstoreApp : Application() {
         createRepo()
     }
 
-    private fun createRepo() {
+    fun createRepo() {
         val api = RetroInstance.getInstance().create(InstaService::class.java)
         val sharePrefs = SharePrefs(applicationContext)
 

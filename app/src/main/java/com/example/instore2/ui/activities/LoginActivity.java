@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                     LoginActivity.this.webView.destroy();
                     Intent intent = new Intent();
                     intent.putExtra("result", "result");
-                    LoginActivity.this.setResult(-1, intent);
+                    LoginActivity.this.setResult(100, intent);
                     LoginActivity.this.finish();
                 }
             } catch (Exception e) {
