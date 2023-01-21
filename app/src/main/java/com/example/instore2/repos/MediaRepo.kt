@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.instore2.models.CurrentUserModel
 import com.example.instore2.models.StoryModel
 import com.example.instore2.models.TrayModel
 import com.example.instore2.networks.InstaService
@@ -70,5 +71,26 @@ class MediaRepo(private val sharePrefs: SharePrefs , private val api : InstaServ
         mediaItemsLivedata.postValue(Resource.Loading<TrayModel>())
         val response = api.getUrlMediaItem(url , cookie , MOZILLA_USR_AGENT)
         mediaItemsLivedata.postValue(handleMediaItems(response))
+    }
+
+    private val currentUserLiveData = MutableLiveData<Resource<CurrentUserModel>>()
+
+    val currentUser : LiveData<Resource<CurrentUserModel>>
+    get() = currentUserLiveData
+
+    suspend fun getCurrentUser(){
+        val response = api.getCurrentUser("https://i.instagram.com/api/v1/accounts/current_user" , cookie , IPHONE_USER_AGENT)
+        currentUserLiveData.postValue(handleCurrentUser(response))
+    }
+
+    private fun handleCurrentUser(response: Response<CurrentUserModel>) : Resource<CurrentUserModel>{
+        if (response.isSuccessful){
+            if (response.body() != null){
+                Log.d("Current user", "onCreate: current user success")
+                return  Resource.Success<CurrentUserModel>(response.body()!!)
+            }
+        }
+        Log.d("Current user", "onCreate: current user Error")
+        return Resource.Error<CurrentUserModel>(response.message())
     }
 }

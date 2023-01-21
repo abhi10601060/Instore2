@@ -1,7 +1,9 @@
 package com.example.instore2.networks
 
+import com.example.instore2.models.CurrentUserModel
 import com.example.instore2.models.StoryModel
 import com.example.instore2.models.TrayModel
+import com.example.instore2.models.UserModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -17,5 +19,8 @@ interface InstaService {
 
     @GET
     suspend fun getUrlMediaItem(@Url url : String, @Header("Cookie") str2 : String , @Header("User-Agent")  str3 : String) : Response<TrayModel>
+
+    @GET
+    suspend fun getCurrentUser(@Url url : String , @Header("Cookie") str2 : String , @Header("User-Agent")  str3 : String) : Response<CurrentUserModel>
 
 }

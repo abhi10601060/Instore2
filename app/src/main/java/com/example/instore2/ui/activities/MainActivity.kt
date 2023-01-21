@@ -14,6 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -22,9 +23,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.instore2.R
 import com.example.instore2.adapters.MediaItemsAdapter
 import com.example.instore2.adapters.StoriesAdapter
+import com.example.instore2.models.CurrentUserModel
 import com.example.instore2.models.StoryModel
 import com.example.instore2.models.TrayModel
 import com.example.instore2.models.UserModel
@@ -33,6 +36,7 @@ import com.example.instore2.utility.InstoreApp
 import com.example.instore2.viewmodels.MainViewModel
 import com.example.instore2.viewmodels.MainViewModelFactory
 import com.google.android.material.appbar.MaterialToolbar
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , MediaItemsAdapter.DownloadButtonClicked{
@@ -43,6 +47,8 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     lateinit var searchBar : EditText
     lateinit var btnPreview : Button
     lateinit var toolbar: MaterialToolbar
+    lateinit var currentUserProfileImage : CircleImageView
+    lateinit var currentUserProfileName : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +61,8 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         val mediaRepo = (application as InstoreApp).mediaRepo
         viewModel = ViewModelProvider(this , MainViewModelFactory(mediaRepo)).get(MainViewModel::class.java)
 
+        viewModel.getCurrentUser()
+        setCurrentUser()
         viewModel.getStories()
         setStories()
         setMediaItem()
@@ -80,6 +88,31 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         searchBar = findViewById(R.id.edt_search_url_bar)
         btnPreview = findViewById(R.id.btn_preview)
         toolbar = findViewById(R.id.toolbar)
+        currentUserProfileImage = findViewById(R.id.user_profile_image)
+        currentUserProfileName = findViewById(R.id.txt_user_name)
+    }
+
+    private fun setCurrentUser() {
+        viewModel.currentUser.observe(this , Observer {
+            when(it){
+
+                is Resource.Error<CurrentUserModel> -> {
+                    Toast.makeText(this, "Current User Did not found...", Toast.LENGTH_SHORT).show()}
+
+                is Resource.Success<CurrentUserModel> -> {
+                    val user = it.data?.user
+                    if (user != null){
+                        Glide.with(this)
+                            .asBitmap()
+                            .load(user.profilepicurl.toString())
+                            .into(currentUserProfileImage)
+
+                        currentUserProfileName.text = user.username.toString()
+                    }
+                }
+
+            }
+        })
     }
 
     private fun setStories(){

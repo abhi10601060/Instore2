@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.instore2.models.CurrentUserModel
 import com.example.instore2.models.StoryModel
 import com.example.instore2.models.TrayModel
 import com.example.instore2.networks.Resource
@@ -43,5 +44,14 @@ class MainViewModel(val repo : MediaRepo) : ViewModel() {
         val suffix = "__a=1&__d=dis"
         val newUrl = rawUrl.replaceAfter("/?" , suffix , "abcde" )
         return newUrl
+    }
+
+    val currentUser : LiveData<Resource<CurrentUserModel>>
+    get() = repo.currentUser
+
+    fun getCurrentUser(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getCurrentUser()
+        }
     }
 }
