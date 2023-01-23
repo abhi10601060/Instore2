@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.instore2.models.CurrentUserModel
 import com.example.instore2.models.StoryModel
 import com.example.instore2.models.TrayModel
+import com.example.instore2.models.UserModel
 import com.example.instore2.networks.Resource
 import com.example.instore2.repos.MediaRepo
 import kotlinx.coroutines.Dispatchers
@@ -53,5 +54,16 @@ class MainViewModel(val repo : MediaRepo) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repo.getCurrentUser()
         }
+    }
+
+    val recentSearches : LiveData<ArrayList<UserModel>>
+    get() = repo.recentSearches
+
+    fun getRecentSearches(){
+        repo.getRecentSearches()
+    }
+
+    fun putRecentSearch(owner: Long , search : UserModel){
+        repo.addRecentSearch(owner, search)
     }
 }

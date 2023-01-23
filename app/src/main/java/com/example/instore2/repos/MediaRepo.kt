@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.instore2.models.CurrentUserModel
 import com.example.instore2.models.StoryModel
 import com.example.instore2.models.TrayModel
+import com.example.instore2.models.UserModel
 import com.example.instore2.networks.InstaService
 import com.example.instore2.networks.Resource
 import com.example.instore2.utility.SharePrefs
@@ -92,5 +93,22 @@ class MediaRepo(private val sharePrefs: SharePrefs , private val api : InstaServ
         }
         Log.d("Current user", "onCreate: current user Error")
         return Resource.Error<CurrentUserModel>(response.message())
+    }
+
+    private val recentSearchLivedata = MutableLiveData<ArrayList<UserModel>>()
+
+    val recentSearches : LiveData<ArrayList<UserModel>>
+    get() = recentSearchLivedata
+
+    fun addRecentSearch(owner : Long , search : UserModel){
+        sharePrefs.putRecentSearch(search)
+        getRecentSearches()
+    }
+
+    fun getRecentSearches(){
+        Log.d("RECENT", "getRecentSearches: called")
+        val recentSearch = sharePrefs.getRecentSearches()
+        Log.d("RECENT", "getRecentSearches: retreived ${recentSearch.toString()}")
+        recentSearchLivedata.postValue(recentSearch)
     }
 }

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.instore2.R
 import com.example.instore2.adapters.MediaItemsAdapter
+import com.example.instore2.adapters.RecentlyVisitedAdapter
 import com.example.instore2.adapters.StoriesAdapter
 import com.example.instore2.models.CurrentUserModel
 import com.example.instore2.models.StoryModel
@@ -36,6 +38,7 @@ import com.example.instore2.utility.InstoreApp
 import com.example.instore2.viewmodels.MainViewModel
 import com.example.instore2.viewmodels.MainViewModelFactory
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.card.MaterialCardView
 import de.hdodenhof.circleimageview.CircleImageView
 
 
@@ -44,11 +47,14 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     lateinit var viewModel : MainViewModel
     lateinit var storiesRV : RecyclerView
     lateinit var mediaItemsRV : RecyclerView
+    lateinit var recentVisitsRV : RecyclerView
     lateinit var searchBar : EditText
     lateinit var btnPreview : Button
     lateinit var toolbar: MaterialToolbar
     lateinit var currentUserProfileImage : CircleImageView
     lateinit var currentUserProfileName : TextView
+    lateinit var recentlyVisitedCard : MaterialCardView
+    var currentUserID : Long = 1234
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +72,8 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         viewModel.getStories()
         setStories()
         setMediaItem()
+        viewModel.getRecentSearches()
+        setRecentVisits()
 
         btnPreview.setOnClickListener(View.OnClickListener {
             val url = searchBar.text.toString().trim()
@@ -73,6 +81,26 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             if (url.contains("https://www.instagram.com/")){
                 viewModel.getUrlMediaItems(url)
             }
+        })
+
+
+    }
+
+    private fun setRecentVisits() {
+        viewModel.recentSearches.observe(this , object : Observer<ArrayList<UserModel>> {
+            override fun onChanged(it: ArrayList<UserModel>?) {
+                if (it != null){
+                    recentlyVisitedCard.visibility = View.VISIBLE
+                    val recentVisitAdapter = RecentlyVisitedAdapter(this@MainActivity)
+                    recentVisitAdapter.submitList(it.reversed())
+                    recentVisitsRV.adapter = recentVisitAdapter
+                }
+                else{
+                    recentlyVisitedCard.visibility = View.GONE
+                    Log.d("RECENT", "onChanged: recent search is empty")
+                }
+            }
+
         })
     }
 
@@ -90,6 +118,8 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         toolbar = findViewById(R.id.toolbar)
         currentUserProfileImage = findViewById(R.id.user_profile_image)
         currentUserProfileName = findViewById(R.id.txt_user_name)
+        recentVisitsRV = findViewById(R.id.recent_visit_RV)
+        recentlyVisitedCard = findViewById(R.id.recent_visit_card)
     }
 
     private fun setCurrentUser() {
@@ -108,6 +138,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
                             .into(currentUserProfileImage)
 
                         currentUserProfileName.text = user.username.toString()
+                        currentUserID = user.pk
                     }
                 }
 
@@ -212,6 +243,8 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             val manager = (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager)
             manager.enqueue(request)
             Toast.makeText(this, "Downloading started...", Toast.LENGTH_SHORT).show()
+            viewModel.putRecentSearch(currentUserID , user)
+            Log.d("RECENT", "onDownloadButtonClicked: $currentUserID")
         }
         else{
             askStoragePermissions()

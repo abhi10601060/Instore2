@@ -18,24 +18,15 @@
             android:background="@color/indigo"
             app:menu="@menu/storage_menu"
             app:title="Instore2"
-            app:titleTextColor="@color/white" />
+            app:titleTextColor="@color/white"
+            />
 
-        <TextView
-            android:id="@+id/stories_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:layout_marginLeft="5dp"
-            android:text="Stories"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_profile_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_below="@+id/stories_text"
+            android:layout_below="@+id/toolbar"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:src="@mipmap/ic_launcher"
@@ -105,7 +96,7 @@
             android:id="@+id/btns_LL">
 
             <Button
-                android:layout_width="180dp"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:text="Preview post"
                 android:id="@+id/btn_preview"
@@ -113,7 +104,7 @@
                 android:textColor="@color/white"/>
 
             <Button
-                android:layout_width="180dp"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:text="Download all"
                 android:id="@+id/btn_download_all"
@@ -122,11 +113,55 @@
                 android:textColor="@color/white"/>
         </LinearLayout>
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="7dp"
+            android:layout_below="@id/btns_LL"
+            app:cardCornerRadius="5dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/indigo"
+            android:elevation="0dp"
+            android:id="@+id/recent_visit_card"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/recent_visit_RL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/searchbar"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/txt_recently_visited"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recently Visited"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recent_visit_RV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_recently_visited"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/media_items_RV"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_below="@id/btns_LL"
+            android:layout_below="@id/recent_visit_card"
             android:layout_marginTop="5dp"
             android:layout_centerHorizontal="true"
             />
