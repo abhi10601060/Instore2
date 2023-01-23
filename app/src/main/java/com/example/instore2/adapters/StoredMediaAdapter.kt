@@ -74,11 +74,7 @@ class StoredMediaAdapter(private val medias: MutableList<File>, private val cont
             override fun onMenuItemClick(p0: MenuItem?): Boolean {
                 when(p0?.itemId){
                     R.id.delete_media ->{
-                        if(media.deleteRecursively()){
-                            Log.d("DEL", "onMenuItemClick:  deleted")
-                        }else{
-                            Log.d("DEL", "onMenuItemClick:  Not deleted")
-                        }
+                        media.delete()
                         medias.remove(media)
                         notifyDataSetChanged()
                     }

@@ -20,7 +20,7 @@ class StorageRepo {
 
     fun loadPhotos(){
         val photosDirectory = File("${Environment.getExternalStorageDirectory()}/Download/Instore2/photos" )
-
+        Log.d("ABHI", "loadPhotos exists : ${photosDirectory.exists()}")
         val photos = photosDirectory.listFiles()
 
         Log.d("ABHI", "PHOTOS: ${photos.toString()} -- ${photosDirectory.toString()}")
