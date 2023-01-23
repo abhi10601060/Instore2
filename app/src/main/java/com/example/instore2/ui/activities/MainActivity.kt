@@ -54,6 +54,8 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     lateinit var currentUserProfileImage : CircleImageView
     lateinit var currentUserProfileName : TextView
     lateinit var recentlyVisitedCard : MaterialCardView
+    lateinit var downloadAllButton : Button
+    private var  mediaItemsAdapter : MediaItemsAdapter? = null
     var currentUserID : Long = 1234
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +85,10 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             }
         })
 
+        downloadAllButton.setOnClickListener(View.OnClickListener {
+            mediaItemsAdapter?.downloadAll()
+            if (mediaItemsAdapter == null) Log.d("ABHI", "doawnload All : mediaItemAdapter is null")
+        })
 
     }
 
@@ -120,6 +126,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         currentUserProfileName = findViewById(R.id.txt_user_name)
         recentVisitsRV = findViewById(R.id.recent_visit_RV)
         recentlyVisitedCard = findViewById(R.id.recent_visit_card)
+        downloadAllButton = findViewById(R.id.btn_download_all)
     }
 
     private fun setCurrentUser() {
@@ -196,19 +203,19 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
                         if (trayModel.items != null){
 
                             if(trayModel.num_results == 1){
-                                val mediaItemsAdapter = MediaItemsAdapter(this , trayModel.items.get(0).user, this)
+                                mediaItemsAdapter = MediaItemsAdapter(this , trayModel.items.get(0).user, this)
                                 if (trayModel.items.get(0).mediatype == 8){
-                                    mediaItemsAdapter.submitList(trayModel.items.get(0).carousel_media)
+                                    mediaItemsAdapter!!.submitList(trayModel.items.get(0).carousel_media)
                                 }
                                 else{
-                                    mediaItemsAdapter.submitList(trayModel.items)
+                                    mediaItemsAdapter!!.submitList(trayModel.items)
                                 }
                                 mediaItemsRV.adapter = mediaItemsAdapter
                                 mediaItemsRV.layoutManager = GridLayoutManager(this , 2)
                             }
                             else{
-                                val mediaItemsAdapter = MediaItemsAdapter(this , trayModel.user, this)
-                                mediaItemsAdapter.submitList(trayModel.items)
+                                mediaItemsAdapter = MediaItemsAdapter(this , trayModel.user, this)
+                                mediaItemsAdapter!!.submitList(trayModel.items)
                                 mediaItemsRV.adapter = mediaItemsAdapter
                                 mediaItemsRV.layoutManager = GridLayoutManager(this , 2)
                             }

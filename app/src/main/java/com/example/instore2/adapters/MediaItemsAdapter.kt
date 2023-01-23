@@ -2,6 +2,7 @@ package com.example.instore2.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,12 +41,7 @@ class MediaItemsAdapter(private val context: Context , private val user: UserMod
         holder.userName.text = user.username.toString()
 
         holder.downloadButton.setOnClickListener(View.OnClickListener {
-            if (item.mediatype ==1){
-                downloadButtonClicked.onDownloadButtonClicked(item.mediatype , item.imageversions2.candidates.get(0).url ,user)
-            }
-            else{
-                downloadButtonClicked.onDownloadButtonClicked(item.mediatype , item.videoversions.get(0).url , user)
-            }
+            downloadMediaItem(item)
         })
 
         holder.image.setOnClickListener(View.OnClickListener {
@@ -61,6 +57,21 @@ class MediaItemsAdapter(private val context: Context , private val user: UserMod
         })
     }
 
+    fun downloadMediaItem(item : ItemModel){
+        if (item.mediatype ==1){
+            downloadButtonClicked.onDownloadButtonClicked(item.mediatype , item.imageversions2.candidates.get(0).url ,user)
+        }
+        else{
+            downloadButtonClicked.onDownloadButtonClicked(item.mediatype , item.videoversions.get(0).url , user)
+        }
+    }
+
+    fun downloadAll(){
+        Log.d("ABHI", "downloadAll:  called ")
+        for (item in currentList){
+            downloadMediaItem(item)
+        }
+    }
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
