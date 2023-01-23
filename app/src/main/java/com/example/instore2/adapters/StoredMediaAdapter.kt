@@ -32,11 +32,11 @@ class StoredMediaAdapter(private val medias: MutableList<File>, private val cont
         val media = medias.get(position)
 
         holder.mediaName.setText(media.name)
-//        holder.options.setOnClickListener(View.OnClickListener {
-//            Log.d("ABHI", "onBindViewHolder: ${holder.adapterPosition} ")
-//
-//            showPopup(holder.options , post )
-//        })
+
+        holder.options.setOnClickListener(View.OnClickListener {
+            Log.d("ABHI", "onBindViewHolder: ${holder.adapterPosition} ")
+            showPopup(holder.options , media )
+        })
 
         if(media.absolutePath.endsWith(".mp4")){
             val bitmap = ThumbnailUtils.createVideoThumbnail(media.absolutePath, MediaStore.Video.Thumbnails.MINI_KIND)
@@ -66,33 +66,37 @@ class StoredMediaAdapter(private val medias: MutableList<File>, private val cont
         return df.format(size).toDouble().toString()
     }
 
-//    private fun showPopup(view: View , post : File ) {
-//        val popupMenu = PopupMenu(view.context , view , Gravity.LEFT)
-//        popupMenu.inflate(R.menu.stored_post_options_menu)
-//        popupMenu.show()
-//        popupMenu.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener{
-//            override fun onMenuItemClick(p0: MenuItem?): Boolean {
-//                when(p0?.itemId){
-//                    R.id.post_delete ->{
-//                        post.delete()
-//                        posts.remove(post)
-//                        notifyDataSetChanged()
-//                    }
-//
-//                    R.id.post_send -> {
-//                        if (post.endsWith(".mp4")){
-//                            sendPost("video/*" , "Share Video" , post)
-//                        }
-//                        else {
-//                            sendPost("image/*" , "Share Image" , post)
-//                        }
-//
-//                    }
-//                }
-//                return false
-//            }
-//        })
-//    }
+    private fun showPopup(view: View , media : File ) {
+        val popupMenu = PopupMenu(view.context , view , Gravity.LEFT)
+        popupMenu.inflate(R.menu.stored_post_menu)
+        popupMenu.show()
+        popupMenu.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener{
+            override fun onMenuItemClick(p0: MenuItem?): Boolean {
+                when(p0?.itemId){
+                    R.id.delete_media ->{
+                        if(media.deleteRecursively()){
+                            Log.d("DEL", "onMenuItemClick:  deleted")
+                        }else{
+                            Log.d("DEL", "onMenuItemClick:  Not deleted")
+                        }
+                        medias.remove(media)
+                        notifyDataSetChanged()
+                    }
+
+                    R.id.send_media -> {
+                        if (media.endsWith(".mp4")){
+                            sendPost("video/*" , "Share Video" , media)
+                        }
+                        else {
+                            sendPost("image/*" , "Share Image" , media)
+                        }
+
+                    }
+                }
+                return false
+            }
+        })
+    }
 
     private fun sendPost(type : String , title : String, file : File) {
         val intent = Intent(Intent.ACTION_SEND)
