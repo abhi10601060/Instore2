@@ -102,5 +102,13 @@ public class SharePrefs {
         return new ArrayList<UserModel>();
     }
 
+    public void logout(){
+        this.putBoolean(SharePrefs.IS_INSTAGRAM_LOGIN, false);
+        this.putString(SharePrefs.COOKIES, "");
+        this.putString(SharePrefs.CSRF, "");
+        this.putString(SharePrefs.SESSIONID, "");
+        this.putString(SharePrefs.USERID, "");
+    }
+
 
 }

@@ -18,8 +18,7 @@
             android:background="@color/indigo"
             app:menu="@menu/storage_menu"
             app:title="Instore2"
-            app:titleTextColor="@color/white"
-            />
+            app:titleTextColor="@color/white"/>
 
 
         <de.hdodenhof.circleimageview.CircleImageView

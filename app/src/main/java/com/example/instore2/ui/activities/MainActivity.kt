@@ -10,13 +10,8 @@ import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.view.*
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -34,6 +29,7 @@ import com.example.instore2.models.StoryModel
 import com.example.instore2.models.TrayModel
 import com.example.instore2.models.UserModel
 import com.example.instore2.networks.Resource
+import com.example.instore2.ui.dialogues.LogoutDialogue
 import com.example.instore2.utility.InstoreApp
 import com.example.instore2.viewmodels.MainViewModel
 import com.example.instore2.viewmodels.MainViewModelFactory
@@ -294,6 +290,10 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             R.id.storage_menu_item -> {
                 val intent = Intent(this , StorageActivity::class.java)
                 startActivity(intent)
+            }
+            R.id.logout_btn -> {
+                val logoutDialogue = LogoutDialogue()
+                logoutDialogue.show(supportFragmentManager , "logout_dialogue")
             }
         }
         return super.onOptionsItemSelected(item)
