@@ -36,7 +36,12 @@ class DummyStartActivity : AppCompatActivity() {
 
         viewModel.currentUser.observe(this , Observer {
             when(it){
-                is Resource.Success<CurrentUserModel> -> {startActivity(Intent(this , MainActivity::class.java))}
+                is Resource.Success<CurrentUserModel> -> {
+                    Log.d("ACTIVITY", "onCreate:  called")
+                    val intent = Intent(this , MainActivity::class.java)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                }
 
                 is Resource.Error<CurrentUserModel> -> { loginButton.visibility = View.VISIBLE }
             }
@@ -66,7 +71,10 @@ class DummyStartActivity : AppCompatActivity() {
 
             100 -> {
                 (application as InstoreApp).createRepo()
-                startActivity(Intent(this, MainActivity::class.java))
+                Log.d("ACTIVITY", "onActivityResult: called")
+                val intent = Intent(this , MainActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
             }
 
         }

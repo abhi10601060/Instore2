@@ -23,7 +23,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.activities.DummyStartActivity"
-            android:exported="true">
+            android:exported="true"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +36,8 @@
             android:exported="true" />
         <activity
             android:name=".ui.activities.LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
