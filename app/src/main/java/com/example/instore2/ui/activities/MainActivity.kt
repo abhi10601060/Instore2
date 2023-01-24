@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         btnPreview.setOnClickListener(View.OnClickListener {
             val url = searchBar.text.toString().trim()
             Log.d("PREVIEW", "onCreate: ${url.toString()}")
-            if (url.contains("https://www.instagram.com/")){
+            if (url.contains("https://www.instagram.com/") || url.contains("https://instagram.com/")){
                 viewModel.handleEnteredLink(url)
             }
         })

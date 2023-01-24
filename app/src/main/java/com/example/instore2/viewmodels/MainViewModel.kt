@@ -37,9 +37,37 @@ class MainViewModel(val repo : MediaRepo) : ViewModel() {
         if (!rawUrl.contains("/p/") && !rawUrl.contains("/reel/") && !rawUrl.contains("/stories/") && !rawUrl.contains("/tv/")){
             getUserMedia(rawUrl)
         }
+        else if (rawUrl.contains("/stories/")){
+            getStoryMediaFromUrl(rawUrl)
+        }
         else{
             getUrlMediaItems(rawUrl)
         }
+    }
+
+    fun getStoryMediaFromUrl(rawUrl: String) {
+        Log.d("STORY", "getStoryMediaFromUrl:  called")
+        var mediaId = ""
+        for (i in rawUrl.indices){
+            if (rawUrl[i] == '?'){
+                break
+            }
+            else if (rawUrl.substring(i).startsWith("/?")){
+                break
+            }
+            else if (rawUrl[i] == '/'){
+                mediaId = ""
+            }
+            else{
+                mediaId += rawUrl[i]
+            }
+        }
+        val newUrl = "https://i.instagram.com/api/v1/media/${mediaId}/info"
+        Log.d("STORY", "getStoryMediaFromUrl: $mediaId ")
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getUrlStory(newUrl)
+        }
+
     }
 
     private fun getUserMedia(rawUrl: String) {
@@ -52,6 +80,7 @@ class MainViewModel(val repo : MediaRepo) : ViewModel() {
 
     fun getUrlMediaItems(rawUrl : String){
         val url = getJsonUrl(rawUrl)
+        Log.d("STORY", "onCreate: $url")
         Log.d("PREVIEW", "onCreate: $url")
         viewModelScope.launch(Dispatchers.IO) {
             repo.getUrlMediaItem(url)

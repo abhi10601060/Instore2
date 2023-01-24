@@ -63,6 +63,13 @@ class MediaRepo(private val sharePrefs: SharePrefs , private val api : InstaServ
         return Resource.Error<TrayModel>(response.message())
     }
 
+    suspend fun getUrlStory(url: String){
+        Log.d("PREVIEW", "onCreate: repo getUrl called")
+        mediaItemsLivedata.postValue(Resource.Loading<TrayModel>())
+        val response = api.getUrlMediaItem(url , cookie , IPHONE_USER_AGENT)
+        mediaItemsLivedata.postValue(handleMediaItems(response))
+    }
+
     suspend fun getUrlMediaItem(url : String){
         Log.d("PREVIEW", "onCreate: repo getUrl called")
         mediaItemsLivedata.postValue(Resource.Loading<TrayModel>())
