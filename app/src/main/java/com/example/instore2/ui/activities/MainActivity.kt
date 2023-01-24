@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             val url = searchBar.text.toString().trim()
             Log.d("PREVIEW", "onCreate: ${url.toString()}")
             if (url.contains("https://www.instagram.com/")){
-                viewModel.getUrlMediaItems(url)
+                viewModel.handleEnteredLink(url)
             }
         })
 
@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
                 }
 
                 is Resource.Error<TrayModel> -> {
-                    // TODO: show error dialogue
+                    //  TODO: show error dialogue
                 }
 
                 is Resource.Success<TrayModel> -> {

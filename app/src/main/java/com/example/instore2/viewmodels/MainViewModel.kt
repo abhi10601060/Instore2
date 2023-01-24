@@ -33,6 +33,23 @@ class MainViewModel(val repo : MediaRepo) : ViewModel() {
         }
     }
 
+    fun handleEnteredLink(rawUrl: String){
+        if (!rawUrl.contains("/p/") && !rawUrl.contains("/reel/") && !rawUrl.contains("/stories/") && !rawUrl.contains("/tv/")){
+            getUserMedia(rawUrl)
+        }
+        else{
+            getUrlMediaItems(rawUrl)
+        }
+    }
+
+    private fun getUserMedia(rawUrl: String) {
+        val suffix = "__a=1&__d=dis"
+        val newUrl = rawUrl.replaceAfter("?" , suffix , "abcde" )
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getUser(newUrl)
+        }
+    }
+
     fun getUrlMediaItems(rawUrl : String){
         val url = getJsonUrl(rawUrl)
         Log.d("PREVIEW", "onCreate: $url")

@@ -21,6 +21,17 @@ public class UserModel implements Serializable {
     @SerializedName("username")
     private String username;
 
+    @SerializedName("profile_pic_url_hd")
+    private String profile_pic_url_hd;
+
+    public String getProfile_pic_url_hd() {
+        return profile_pic_url_hd;
+    }
+
+    public void setProfile_pic_url_hd(String profile_pic_url_hd) {
+        this.profile_pic_url_hd = profile_pic_url_hd;
+    }
+
     public long getPk() {
         return this.pk;
     }

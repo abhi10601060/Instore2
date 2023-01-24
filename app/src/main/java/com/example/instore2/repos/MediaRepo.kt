@@ -2,12 +2,8 @@ package com.example.instore2.repos
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.instore2.models.CurrentUserModel
-import com.example.instore2.models.StoryModel
-import com.example.instore2.models.TrayModel
-import com.example.instore2.models.UserModel
+import com.example.instore2.models.*
 import com.example.instore2.networks.InstaService
 import com.example.instore2.networks.Resource
 import com.example.instore2.utility.SharePrefs
@@ -110,5 +106,41 @@ class MediaRepo(private val sharePrefs: SharePrefs , private val api : InstaServ
         val recentSearch = sharePrefs.getRecentSearches()
         Log.d("RECENT", "getRecentSearches: retreived ${recentSearch.toString()}")
         recentSearchLivedata.postValue(recentSearch)
+    }
+
+    suspend fun getUser(url: String){
+        Log.d("USER", "onCreate: repo getUser called")
+        mediaItemsLivedata.postValue(Resource.Loading<TrayModel>())
+        val response = api.getUser(url , cookie , IPHONE_USER_AGENT)
+        mediaItemsLivedata.postValue(handleUser(response))
+    }
+
+    private fun handleUser(response: Response<UserSearchModel>)  : Resource<TrayModel>{
+        if (response.isSuccessful){
+            if (response.body() != null){
+                Log.d("Current user", "onCreate: current user success")
+                val trayModel = getTrayFromUser(response.body()!!)
+                return Resource.Success<TrayModel>(trayModel)
+            }
+        }
+        Log.d(" user", "onCreate: current user Error")
+        return Resource.Error<TrayModel>(response.message())
+    }
+
+    private fun getTrayFromUser(userSearchModel: UserSearchModel) : TrayModel {
+        val user = userSearchModel.graphql.user
+        user.profilepicurl = user.profile_pic_url_hd
+        val candidatesModel = CandidatesModel()
+        candidatesModel.url = user.profile_pic_url_hd
+        val imageVersionModel = ImageVersionModel()
+        imageVersionModel.candidates = listOf(candidatesModel)
+        val itemModel = ItemModel()
+        itemModel.imageversions2 = imageVersionModel
+        itemModel.mediatype = 1
+
+        val trayModel = TrayModel()
+        trayModel.user = user
+        trayModel.items = listOf(itemModel)
+        return trayModel
     }
 }
