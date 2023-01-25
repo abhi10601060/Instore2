@@ -81,12 +81,32 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             if (url.contains("https://www.instagram.com/") || url.contains("https://instagram.com/")){
                 viewModel.handleEnteredLink(url)
             }
+            else{
+                Toast.makeText(this, "Please enter valid post url...", Toast.LENGTH_SHORT).show()
+            }
         })
 
         downloadAllButton.setOnClickListener(View.OnClickListener {
             mediaItemsAdapter?.downloadAll()
             if (mediaItemsAdapter == null) Log.d("ABHI", "doawnload All : mediaItemAdapter is null")
         })
+
+        if (intent != null){
+            if (intent.action.equals(Intent.ACTION_SEND) && intent.type.equals("text/plain")){
+                handleIntent(intent.getStringExtra(Intent.EXTRA_TEXT))
+            }
+        }
+
+    }
+
+    private fun handleIntent(incomingUrl: String?) {
+        if(incomingUrl != null){
+            if (viewModel.currentUser.value == null){
+                startActivity(Intent(this , DummyStartActivity::class.java))
+            }
+            searchBar.setText(incomingUrl)
+            btnPreview.callOnClick()
+        }
 
     }
 
@@ -136,7 +156,8 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
 
                 is Resource.Error<CurrentUserModel> -> {
                     progressBar.visibility = View.GONE
-                    Toast.makeText(this, "Current User Did not found...", Toast.LENGTH_SHORT).show()}
+                    Toast.makeText(this, "Current User Did not found...", Toast.LENGTH_SHORT).show()
+                }
 
                 is Resource.Success<CurrentUserModel> -> {
                     progressBar.visibility = View.GONE
