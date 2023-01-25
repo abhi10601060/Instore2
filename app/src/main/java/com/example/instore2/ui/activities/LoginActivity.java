@@ -4,6 +4,7 @@ package com.example.instore2.ui.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
@@ -85,6 +86,8 @@ public class LoginActivity extends AppCompatActivity {
             super.onPageFinished(webView, str);
             LoginActivity.this.cookies = CookieManager.getInstance().getCookie(str);
             try {
+                Log.d("WEB", "onPageFinished: " + webView.getSettings().getUserAgentString());
+                String userAgent = webView.getSettings().getUserAgentString();
                 String cookie = LoginActivity.this.getCookie(str, "sessionid");
                 String cookie2 = LoginActivity.this.getCookie(str, "csrftoken");
                 String cookie3 = LoginActivity.this.getCookie(str, "ds_user_id");
@@ -94,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                     SharePrefs.getInstance(activity).putString(SharePrefs.SESSIONID, cookie);
                     SharePrefs.getInstance(activity).putString(SharePrefs.USERID, cookie3);
                     SharePrefs.getInstance(activity).putBoolean(SharePrefs.IS_INSTAGRAM_LOGIN, true);
+                    SharePrefs.getInstance(activity).putString(SharePrefs.MOZILLA_USER_AGENT, userAgent);
                     LoginActivity.this.webView.destroy();
                     Intent intent = new Intent();
                     intent.putExtra("result", "result");

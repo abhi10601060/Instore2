@@ -23,6 +23,7 @@ public class SharePrefs {
     public static final String CSRF = "csrf";
     public static final String IS_INSTAGRAM_LOGIN = "Is_Instagram_Login";
     public static final String RECENT_SEARCHES = "Recent_search";
+    public static final String MOZILLA_USER_AGENT = "user_agent";
 
     public SharePrefs(Context context) {
         this.sharedPreferences = context.getSharedPreferences(PREFERENCE, 0);
@@ -108,6 +109,7 @@ public class SharePrefs {
         this.putString(SharePrefs.CSRF, "");
         this.putString(SharePrefs.SESSIONID, "");
         this.putString(SharePrefs.USERID, "");
+        this.putString(SharePrefs.MOZILLA_USER_AGENT , "");
     }
 
 

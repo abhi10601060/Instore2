@@ -11,7 +11,8 @@ import retrofit2.Response
 
 class MediaRepo(private val sharePrefs: SharePrefs , private val api : InstaService) {
 
-    val MOZILLA_USR_AGENT = "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64)\\AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.74 \\Safari/537.36 Edg/79.0.309.43\""
+//    val MOZILLA_USR_AGENT = "\"Mozilla/5.0 (Windows NT 10.0; Win64; x64)\\AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.74 \\Safari/537.36 Edg/79.0.309.43\""
+    val MOZILLA_USR_AGENT = sharePrefs.getString(SharePrefs.MOZILLA_USER_AGENT)
     val IPHONE_USER_AGENT = "\"Instagram 9.5.2 (iPhone7,2; iPhone OS 9_3_3; en_US; en-US; scale=2.00; 750x1334) AppleWebKit/420+\""
 
     val cookie = "ds_user_id=" +
@@ -71,7 +72,7 @@ class MediaRepo(private val sharePrefs: SharePrefs , private val api : InstaServ
     }
 
     suspend fun getUrlMediaItem(url : String){
-        Log.d("PREVIEW", "onCreate: repo getUrl called")
+        Log.d("PREVIEW", "onCreate: repo getUrl called with user agent $MOZILLA_USR_AGENT")
         mediaItemsLivedata.postValue(Resource.Loading<TrayModel>())
         val response = api.getUrlMediaItem(url , cookie , MOZILLA_USR_AGENT)
         mediaItemsLivedata.postValue(handleMediaItems(response))
