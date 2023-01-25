@@ -33,6 +33,7 @@ import com.example.instore2.ui.dialogues.LogoutDialogue
 import com.example.instore2.utility.InstoreApp
 import com.example.instore2.viewmodels.MainViewModel
 import com.example.instore2.viewmodels.MainViewModelFactory
+import com.github.ybq.android.spinkit.SpinKitView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.card.MaterialCardView
 import de.hdodenhof.circleimageview.CircleImageView
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     lateinit var currentUserProfileName : TextView
     lateinit var recentlyVisitedCard : MaterialCardView
     lateinit var downloadAllButton : Button
+    lateinit var progressBar : SpinKitView
     private var  mediaItemsAdapter : MediaItemsAdapter? = null
     var currentUserID : Long = 1234
 
@@ -123,16 +125,21 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         recentVisitsRV = findViewById(R.id.recent_visit_RV)
         recentlyVisitedCard = findViewById(R.id.recent_visit_card)
         downloadAllButton = findViewById(R.id.btn_download_all)
+        progressBar = findViewById(R.id.main_progress_bar)
     }
 
     private fun setCurrentUser() {
         viewModel.currentUser.observe(this , Observer {
             when(it){
 
+                is Resource.Loading<CurrentUserModel> -> {progressBar.visibility = View.VISIBLE}
+
                 is Resource.Error<CurrentUserModel> -> {
+                    progressBar.visibility = View.GONE
                     Toast.makeText(this, "Current User Did not found...", Toast.LENGTH_SHORT).show()}
 
                 is Resource.Success<CurrentUserModel> -> {
+                    progressBar.visibility = View.GONE
                     val user = it.data?.user
                     if (user != null){
                         Glide.with(this)
@@ -154,14 +161,15 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             when(it){
 
                 is Resource.Loading<StoryModel> -> {
-                    // TODO: show progress bar
+                    progressBar.visibility = View.VISIBLE
                 }
 
                 is Resource.Error<StoryModel> -> {
-                    // TODO: show error dialogue
+                    progressBar.visibility = View.GONE
                 }
 
                 is Resource.Success<StoryModel> -> {
+                    progressBar.visibility = View.GONE
                     if (it.data != null){
                         val storyModel = it.data
                         if (storyModel.tray != null){
@@ -186,14 +194,16 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             when(it){
 
                 is Resource.Loading<TrayModel> -> {
-                    // TODO: show progress bar
+                    progressBar.visibility = View.VISIBLE
                 }
 
                 is Resource.Error<TrayModel> -> {
-                    //  TODO: show error dialogue
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(this, "Media didn't found...", Toast.LENGTH_SHORT).show()
                 }
 
                 is Resource.Success<TrayModel> -> {
+                    progressBar.visibility = View.GONE
                     if (it.data != null){
                         val trayModel = it.data
                         if (trayModel.items != null){
