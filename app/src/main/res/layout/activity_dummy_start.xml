@@ -57,6 +57,15 @@
         android:elevation="16dp"
         android:text="Login via Instagram"
         android:textColor="@color/white"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@+id/login_button"
+        app:SpinKit_Style="MultiplePulse"
+        app:SpinKit_Color="@color/indigo"
+        android:id="@+id/login_progress_bar"/>
 
 </RelativeLayout>

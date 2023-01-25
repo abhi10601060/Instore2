@@ -17,11 +17,13 @@ import com.example.instore2.utility.InstoreApp
 import com.example.instore2.utility.SharePrefs
 import com.example.instore2.viewmodels.MainViewModel
 import com.example.instore2.viewmodels.MainViewModelFactory
+import com.github.ybq.android.spinkit.SpinKitView
 
 class DummyStartActivity : AppCompatActivity() {
 
     lateinit var viewModel: MainViewModel
     lateinit var loginButton : Button
+    lateinit var progressBar : SpinKitView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +45,10 @@ class DummyStartActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
 
-                is Resource.Error<CurrentUserModel> -> { loginButton.visibility = View.VISIBLE }
+                is Resource.Error<CurrentUserModel> -> {
+                    progressBar.visibility = View.GONE
+                    loginButton.visibility = View.VISIBLE
+                }
             }
         })
 
@@ -62,6 +67,7 @@ class DummyStartActivity : AppCompatActivity() {
 
     private fun initViews() {
         loginButton = findViewById(R.id.login_button)
+        progressBar = findViewById(R.id.login_progress_bar)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
