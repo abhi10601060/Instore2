@@ -39,7 +39,7 @@ class DummyStartActivity : AppCompatActivity() {
                 is Resource.Success<CurrentUserModel> -> {
                     Log.d("ACTIVITY", "onCreate:  called")
                     val intent = Intent(this , MainActivity::class.java)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 }
 
@@ -73,7 +73,7 @@ class DummyStartActivity : AppCompatActivity() {
                 (application as InstoreApp).createRepo()
                 Log.d("ACTIVITY", "onActivityResult: called")
                 val intent = Intent(this , MainActivity::class.java)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
             }
 
