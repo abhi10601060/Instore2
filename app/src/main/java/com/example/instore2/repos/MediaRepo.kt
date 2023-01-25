@@ -151,4 +151,8 @@ class MediaRepo(private val sharePrefs: SharePrefs , private val api : InstaServ
         trayModel.items = listOf(itemModel)
         return trayModel
     }
+
+    suspend fun currentUserCheck() : Response<CurrentUserModel>{
+        return api.getCurrentUser("https://i.instagram.com/api/v1/accounts/current_user" , cookie , IPHONE_USER_AGENT)
+    }
 }

@@ -12,6 +12,7 @@ import com.example.instore2.networks.Resource
 import com.example.instore2.repos.MediaRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class MainViewModel(val repo : MediaRepo) : ViewModel() {
 
@@ -100,6 +101,10 @@ class MainViewModel(val repo : MediaRepo) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repo.getCurrentUser()
         }
+    }
+
+    suspend fun currentUserCheck() : Response<CurrentUserModel>{
+        return repo.currentUserCheck()
     }
 
     val recentSearches : LiveData<ArrayList<UserModel>>

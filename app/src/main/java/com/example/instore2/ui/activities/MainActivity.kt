@@ -37,6 +37,9 @@ import com.github.ybq.android.spinkit.SpinKitView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.card.MaterialCardView
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , MediaItemsAdapter.DownloadButtonClicked{
@@ -101,11 +104,23 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
 
     private fun handleIntent(incomingUrl: String?) {
         if(incomingUrl != null){
-            if (viewModel.currentUser.value == null){
-                startActivity(Intent(this , DummyStartActivity::class.java))
+            GlobalScope.launch(Dispatchers.IO) {
+                val response = viewModel.currentUserCheck()
+                if (response.isSuccessful){
+                    launch(Dispatchers.Main) {
+                        searchBar.setText(incomingUrl)
+                        btnPreview.callOnClick()
+                    }
+                }
+                else{
+                    launch(Dispatchers.Main) {
+                        Toast.makeText(this@MainActivity, "Couldn't find current user...", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@MainActivity , DummyStartActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    }
+                }
             }
-            searchBar.setText(incomingUrl)
-            btnPreview.callOnClick()
         }
 
     }
