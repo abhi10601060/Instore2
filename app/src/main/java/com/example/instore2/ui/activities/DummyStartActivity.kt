@@ -18,6 +18,9 @@ import com.example.instore2.utility.SharePrefs
 import com.example.instore2.viewmodels.MainViewModel
 import com.example.instore2.viewmodels.MainViewModelFactory
 import com.github.ybq.android.spinkit.SpinKitView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class DummyStartActivity : AppCompatActivity() {
 
@@ -34,23 +37,41 @@ class DummyStartActivity : AppCompatActivity() {
         val repo = (application as InstoreApp).mediaRepo
         viewModel = ViewModelProvider(this , MainViewModelFactory(repo)).get(MainViewModel::class.java)
 
-        viewModel.getCurrentUser()
+//        viewModel.getCurrentUser()
+//
+//        viewModel.currentUser.observe(this , Observer {
+//            when(it){
+//                is Resource.Success<CurrentUserModel> -> {
+//                    Log.d("ACTIVITY", "onCreate:  called")
+//                    val intent = Intent(this , MainActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                    startActivity(intent)
+//                }
+//
+//                is Resource.Error<CurrentUserModel> -> {
+//                    progressBar.visibility = View.GONE
+//                    loginButton.visibility = View.VISIBLE
+//                }
+//            }
+//        })
 
-        viewModel.currentUser.observe(this , Observer {
-            when(it){
-                is Resource.Success<CurrentUserModel> -> {
+        GlobalScope.launch(Dispatchers.IO){
+            val response = viewModel.currentUserCheck()
+            if (response.isSuccessful){
+                launch(Dispatchers.Main) {
                     Log.d("ACTIVITY", "onCreate:  called")
-                    val intent = Intent(this , MainActivity::class.java)
+                    val intent = Intent(this@DummyStartActivity , MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 }
-
-                is Resource.Error<CurrentUserModel> -> {
+            }
+            else{
+                launch(Dispatchers.Main) {
                     progressBar.visibility = View.GONE
                     loginButton.visibility = View.VISIBLE
                 }
             }
-        })
+        }
 
 
         loginButton.setOnClickListener(View.OnClickListener {
