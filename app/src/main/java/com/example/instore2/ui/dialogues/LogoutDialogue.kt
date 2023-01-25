@@ -33,7 +33,7 @@ class LogoutDialogue : DialogFragment() {
             SharePrefs.getInstance(requireContext()).logout()
             (requireActivity().application as InstoreApp).createRepo()
             val intent = Intent(requireActivity() , DummyStartActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         })
         return builder.create()
