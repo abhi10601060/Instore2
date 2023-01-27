@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:background="@color/indigo"
             app:menu="@menu/storage_menu"
-            app:title="Instore2"
+            app:title="InStash"
             app:titleTextColor="@color/white"/>
 
 
