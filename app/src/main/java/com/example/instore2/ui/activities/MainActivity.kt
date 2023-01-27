@@ -276,10 +276,10 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         if (permission){
             var path = ""
             if(mediaType == 1){
-                path = "/Instore2/photos/" + user.username + "_${java.util.Calendar.getInstance().timeInMillis.toString()}" + ".jpg"
+                path = "/Instash/photos/" + user.username + "_${java.util.Calendar.getInstance().timeInMillis.toString()}" + ".jpg"
             }
             else{
-                path = "/Instore2/videos/"+ user.username + "_${java.util.Calendar.getInstance().timeInMillis.toString()}" + ".mp4"
+                path = "/Instash/videos/"+ user.username + "_${java.util.Calendar.getInstance().timeInMillis.toString()}" + ".mp4"
             }
 
             val request = DownloadManager.Request(Uri.parse(url))

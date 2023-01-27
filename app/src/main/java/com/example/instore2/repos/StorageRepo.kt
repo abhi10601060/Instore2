@@ -19,7 +19,7 @@ class StorageRepo {
 
 
     fun loadPhotos(){
-        val photosDirectory = File("${Environment.getExternalStorageDirectory()}/Download/Instore2/photos" )
+        val photosDirectory = File("${Environment.getExternalStorageDirectory()}/Download/Instash/photos" )
         Log.d("ABHI", "loadPhotos exists : ${photosDirectory.exists()}")
         val photos = photosDirectory.listFiles()
 
@@ -42,7 +42,7 @@ class StorageRepo {
     }
 
     fun loadVideos(){
-        val videosDirectory = File("${Environment.getExternalStorageDirectory()}/Download/Instore2/videos" )
+        val videosDirectory = File("${Environment.getExternalStorageDirectory()}/Download/Instash/videos" )
 
         val videos = videosDirectory.listFiles()
 
