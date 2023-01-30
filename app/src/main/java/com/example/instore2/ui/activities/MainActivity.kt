@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     lateinit var recentlyVisitedCard : MaterialCardView
     lateinit var downloadAllButton : Button
     lateinit var progressBar : SpinKitView
+    lateinit var storiesRelativeLayout : RelativeLayout
     private var  mediaItemsAdapter : MediaItemsAdapter? = null
     var currentUserID : Long = 1234
 
@@ -69,6 +70,8 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
 
         val mediaRepo = (application as InstoreApp).mediaRepo
         viewModel = ViewModelProvider(this , MainViewModelFactory(mediaRepo)).get(MainViewModel::class.java)
+
+        checkCurrentUser()
 
         viewModel.getCurrentUser()
         setCurrentUser()
@@ -100,6 +103,22 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             }
         }
 
+    }
+
+    private fun checkCurrentUser() {
+        GlobalScope.launch(Dispatchers.IO){
+            val response = viewModel.currentUserCheck()
+            if (response.isSuccessful){
+                launch(Dispatchers.Main) {
+                   storiesRelativeLayout.visibility = View.VISIBLE
+                }
+            }
+            else{
+                launch(Dispatchers.Main) {
+                   storiesRelativeLayout.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun handleIntent(incomingUrl: String?) {
@@ -162,6 +181,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         recentlyVisitedCard = findViewById(R.id.recent_visit_card)
         downloadAllButton = findViewById(R.id.btn_download_all)
         progressBar = findViewById(R.id.main_progress_bar)
+        storiesRelativeLayout = findViewById(R.id.stories_RL)
     }
 
     private fun setCurrentUser() {

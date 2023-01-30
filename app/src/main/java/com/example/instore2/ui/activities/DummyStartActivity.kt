@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.instore2.R
@@ -27,6 +28,7 @@ class DummyStartActivity : AppCompatActivity() {
     lateinit var viewModel: MainViewModel
     lateinit var loginButton : Button
     lateinit var progressBar : SpinKitView
+    lateinit var withoutLoginButton : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,11 +86,18 @@ class DummyStartActivity : AppCompatActivity() {
 //            startActivity(Intent(this , MainActivity::class.java))
 //        }
 
+        withoutLoginButton.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this@DummyStartActivity , MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        })
+
     }
 
     private fun initViews() {
         loginButton = findViewById(R.id.login_button)
         progressBar = findViewById(R.id.login_progress_bar)
+        withoutLoginButton = findViewById(R.id.txt_without_login_btn)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

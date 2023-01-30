@@ -12,5 +12,6 @@
     <color name="searchbar">#495469</color>
     <color name="searchbar_text">#B4BACB</color>
     <color name="card_background">#3F485A</color>
+    <color name="blue">#1D57CC</color>
 
 </resources>
