@@ -117,4 +117,22 @@ class MainViewModel(val repo : MediaRepo) : ViewModel() {
     fun putRecentSearch(owner: Long , search : UserModel){
         repo.addRecentSearch(owner, search)
     }
+
+//    ******************************************************************** Without Login *****************************************************
+
+    fun handleEnteredLinkWithoutLogin(rawUrl : String){
+        if (!rawUrl.contains("/p/") && !rawUrl.contains("/reel/") && !rawUrl.contains("/stories/") && !rawUrl.contains("/tv/")){
+            getUserMedia(rawUrl)
+        }
+        else{
+            getUrlMediaItemsWithoutLogin(rawUrl)
+        }
+    }
+
+    fun getUrlMediaItemsWithoutLogin(rawUrl: String){
+        val url = getJsonUrl(rawUrl)
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.getUrlMediaWithoutLogin(url)
+        }
+    }
 }

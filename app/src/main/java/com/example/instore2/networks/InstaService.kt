@@ -1,6 +1,7 @@
 package com.example.instore2.networks
 
 import com.example.instore2.models.*
+import com.example.instore2.models.publicmodels.MainModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -23,4 +24,6 @@ interface InstaService {
     @GET
     suspend fun getUser(@Url url : String , @Header("Cookie") str2 : String , @Header("User-Agent")  str3 : String) : Response<UserSearchModel>
 
+    @GET
+    suspend fun getUrlMediaWithoutLogin(@Url url : String) : Response<MainModel>
 }

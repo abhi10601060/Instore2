@@ -9,4 +9,11 @@ public class EdgeModel implements Serializable {
     @SerializedName("node")
     private NodeModel node;
 
+    public NodeModel getNode() {
+        return node;
+    }
+
+    public void setNode(NodeModel node) {
+        this.node = node;
+    }
 }

@@ -31,6 +31,7 @@ import com.example.instore2.models.UserModel
 import com.example.instore2.networks.Resource
 import com.example.instore2.ui.dialogues.LogoutDialogue
 import com.example.instore2.utility.InstoreApp
+import com.example.instore2.utility.SharePrefs
 import com.example.instore2.viewmodels.MainViewModel
 import com.example.instore2.viewmodels.MainViewModelFactory
 import com.github.ybq.android.spinkit.SpinKitView
@@ -85,7 +86,12 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             val url = searchBar.text.toString().trim()
             Log.d("PREVIEW", "onCreate: ${url.toString()}")
             if (url.contains("https://www.instagram.com/") || url.contains("https://instagram.com/")){
-                viewModel.handleEnteredLink(url)
+                if(SharePrefs.getInstance(this).getBoolean(SharePrefs.IS_INSTAGRAM_LOGIN) == false){
+                    viewModel.handleEnteredLinkWithoutLogin(url)
+                }
+                else{
+                    viewModel.handleEnteredLink(url)
+                }
             }
             else{
                 Toast.makeText(this, "Please enter valid post url...", Toast.LENGTH_SHORT).show()
@@ -116,6 +122,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             else{
                 launch(Dispatchers.Main) {
                    storiesRelativeLayout.visibility = View.GONE
+                    SharePrefs.getInstance(this@MainActivity).logout()
                 }
             }
         }

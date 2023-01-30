@@ -9,4 +9,12 @@ public class EdgesToSideCarModel implements Serializable {
 
     @SerializedName("edges")
     private List<EdgeModel> edges;
+
+    public List<EdgeModel> getEdges() {
+        return edges;
+    }
+
+    public void setEdges(List<EdgeModel> edges) {
+        this.edges = edges;
+    }
 }

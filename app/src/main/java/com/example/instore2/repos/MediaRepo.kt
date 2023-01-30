@@ -4,6 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.instore2.models.*
+import com.example.instore2.models.publicmodels.EdgeModel
+import com.example.instore2.models.publicmodels.GraphqlModel
+import com.example.instore2.models.publicmodels.MainModel
+import com.example.instore2.models.publicmodels.ShortCodeMediaModel
 import com.example.instore2.networks.InstaService
 import com.example.instore2.networks.Resource
 import com.example.instore2.utility.SharePrefs
@@ -154,5 +158,118 @@ class MediaRepo(private val sharePrefs: SharePrefs , private val api : InstaServ
 
     suspend fun currentUserCheck() : Response<CurrentUserModel>{
         return api.getCurrentUser("https://i.instagram.com/api/v1/accounts/current_user" , cookie , IPHONE_USER_AGENT)
+    }
+
+
+//    ************************************************************ Without Login **********************************************************
+
+    suspend fun getUrlMediaWithoutLogin(url: String){
+        mediaItemsLivedata.postValue(Resource.Loading<TrayModel>())
+        val response = api.getUrlMediaWithoutLogin(url)
+        mediaItemsLivedata.postValue(handleUrlMediaWithoutLogin(response))
+    }
+
+    private fun handleUrlMediaWithoutLogin(response: Response<MainModel>) : Resource<TrayModel>{
+        if (response.isSuccessful){
+            if (response.body() != null) {
+                val tray = getTrayFromMainModel(response.body()!!)
+                return Resource.Success<TrayModel>(tray)
+            }
+        }
+
+        return Resource.Error<TrayModel>(response.message())
+    }
+
+    private fun getTrayFromMainModel(main : MainModel) : TrayModel{
+        when (main.graphql.shortcode_media.typename){
+            "GraphImage" ->{
+                return  getTrayFromSinglePhotoMedia(main.graphql.shortcode_media)
+            }
+            "GraphVideo" ->{
+                return  getTrayFromSingleVideoMedia(main.graphql.shortcode_media)
+            }
+            "GraphSidecar" ->{
+                return getTrayFromMultipleMediaPost(main.graphql.shortcode_media)
+            }
+        }
+        return TrayModel()
+    }
+    private fun getTrayFromSinglePhotoMedia(shortCode : ShortCodeMediaModel) : TrayModel{
+        val candidatesModel = CandidatesModel()
+        candidatesModel.url = shortCode.display_url
+        val imageVersionModel = ImageVersionModel()
+        imageVersionModel.candidates = listOf(candidatesModel)
+        val itemModel = ItemModel()
+        itemModel.mediatype = 1
+        itemModel.imageversions2 = imageVersionModel
+
+        val trayModel = TrayModel()
+        trayModel.user = shortCode.owner
+        trayModel.items = listOf(itemModel)
+        return trayModel
+    }
+
+    private fun getTrayFromSingleVideoMedia(shortCode : ShortCodeMediaModel) : TrayModel{
+        val candidatesModel = CandidatesModel()
+        candidatesModel.url = shortCode.display_url
+        val imageVersionModel = ImageVersionModel()
+        imageVersionModel.candidates = listOf(candidatesModel)
+        val videoVersionModel = VideoVersionModel()
+        videoVersionModel.url = shortCode.video_url
+        val itemModel = ItemModel()
+        itemModel.mediatype = 2
+        itemModel.videoversions = listOf(videoVersionModel)
+        itemModel.imageversions2 = imageVersionModel
+
+        val trayModel = TrayModel()
+        trayModel.user = shortCode.owner
+        trayModel.items = listOf(itemModel)
+        return trayModel
+    }
+
+    private fun getTrayFromMultipleMediaPost(shortCode: ShortCodeMediaModel) : TrayModel{
+        val listOfItems = getItemsFromSideCar(shortCode.edge_sidecar_to_children.edges)
+
+        val trayModel = TrayModel()
+        val itemModel = ItemModel()
+        itemModel.mediatype = 8
+        itemModel.carousel_media_count = listOfItems.size
+        itemModel.carousel_media = listOfItems
+        itemModel.user = shortCode.owner
+
+        trayModel.items = listOf(itemModel)
+        trayModel.num_results=1
+        trayModel.user = shortCode.owner
+        return trayModel
+    }
+
+    private fun getItemsFromSideCar(edges: List<EdgeModel>): List<ItemModel> {
+        val items = mutableListOf<ItemModel>()
+        for (i in edges.indices){
+            val edge = edges[i]
+            val item = ItemModel()
+            if (edge.node.typename.equals("GraphImage")){
+                val candidatesModel = CandidatesModel()
+                candidatesModel.url = edge.node.display_url
+                val imageVersionModel = ImageVersionModel()
+                imageVersionModel.candidates = listOf(candidatesModel)
+                item.imageversions2 = imageVersionModel
+                item.mediatype = 1
+            }
+            else{
+                val candidatesModel = CandidatesModel()
+                candidatesModel.url = edge.node.display_url
+                val imageVersionModel = ImageVersionModel()
+                imageVersionModel.candidates = listOf(candidatesModel)
+
+                val videoVersionModel = VideoVersionModel()
+                videoVersionModel.url = edge.node.video_url
+                item.mediatype = 2
+                item.videoversions = listOf(videoVersionModel)
+                item.imageversions2 = imageVersionModel
+            }
+            items.add(item)
+        }
+        return items
     }
 }
