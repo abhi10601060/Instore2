@@ -88,7 +88,11 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             Log.d("PREVIEW", "onCreate: ${url.toString()}")
             if (url.contains("https://www.instagram.com/") || url.contains("https://instagram.com/")){
                 if(SharePrefs.getInstance(this).getBoolean(SharePrefs.IS_INSTAGRAM_LOGIN) == false){
-                    viewModel.handleEnteredLinkWithoutLogin(url)
+                    if(url.contains("/stories/")){
+                        showLoginDialog()
+                    }else{
+                        viewModel.handleEnteredLinkWithoutLogin(url)
+                    }
                 }
                 else{
                     viewModel.handleEnteredLink(url)
@@ -110,7 +114,11 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             }
         }
 
+        if (!SharePrefs.getInstance(this).getString(SharePrefs.INCOMING_URL).equals("")){
+            handleIncomingUrl()
+        }
     }
+
 
     private fun checkCurrentUser() {
         GlobalScope.launch(Dispatchers.IO){
@@ -380,5 +388,11 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     fun showLoginDialog(){
         val loginDialogue = LoginDialogue()
         loginDialogue.show(supportFragmentManager , "login_dialogue")
+    }
+
+    private fun handleIncomingUrl() {
+        searchBar.setText(SharePrefs.getInstance(this).getString(SharePrefs.INCOMING_URL))
+        btnPreview.callOnClick()
+        SharePrefs.getInstance(this).putString(SharePrefs.INCOMING_URL , "")
     }
 }

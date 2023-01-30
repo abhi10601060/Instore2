@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.instore2.R
 import com.example.instore2.ui.activities.DummyStartActivity
 import com.example.instore2.ui.activities.MainActivity
+import com.example.instore2.utility.SharePrefs
 
 class LoginDialogue : DialogFragment() {
 
@@ -40,8 +41,8 @@ class LoginDialogue : DialogFragment() {
     }
 
     private fun saveUrl() {
-        val url = (activity as MainActivity).searchBar.text
-
+        val url = (activity as MainActivity).searchBar.text.toString()
+        SharePrefs.getInstance(activity).putString(SharePrefs.INCOMING_URL , url)
     }
 
     private fun initViews(view: View) {

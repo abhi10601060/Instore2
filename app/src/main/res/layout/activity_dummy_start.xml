@@ -79,7 +79,7 @@
         android:elevation="16dp"
         android:text="Login via Instagram"
         android:textColor="@color/white"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:layout_width="wrap_content"
