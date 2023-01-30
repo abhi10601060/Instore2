@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -29,12 +30,19 @@ class DummyStartActivity : AppCompatActivity() {
     lateinit var loginButton : Button
     lateinit var progressBar : SpinKitView
     lateinit var withoutLoginButton : TextView
+    lateinit var withoutLoginRL : RelativeLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dummy_start)
 
         initViews()
+
+        if (intent != null){
+            if (intent.getStringExtra("purpose").equals("login")){
+                withoutLoginRL.visibility = View.GONE
+            }
+        }
 
         val repo = (application as InstoreApp).mediaRepo
         viewModel = ViewModelProvider(this , MainViewModelFactory(repo)).get(MainViewModel::class.java)
@@ -98,6 +106,7 @@ class DummyStartActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.login_button)
         progressBar = findViewById(R.id.login_progress_bar)
         withoutLoginButton = findViewById(R.id.txt_without_login_btn)
+        withoutLoginRL = findViewById(R.id.without_login_RL)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

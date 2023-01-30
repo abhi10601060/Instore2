@@ -29,6 +29,7 @@ import com.example.instore2.models.StoryModel
 import com.example.instore2.models.TrayModel
 import com.example.instore2.models.UserModel
 import com.example.instore2.networks.Resource
+import com.example.instore2.ui.dialogues.LoginDialogue
 import com.example.instore2.ui.dialogues.LogoutDialogue
 import com.example.instore2.utility.InstoreApp
 import com.example.instore2.utility.SharePrefs
@@ -263,6 +264,9 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
 
                 is Resource.Error<TrayModel> -> {
                     progressBar.visibility = View.GONE
+                    if (SharePrefs.getInstance(this).getBoolean(SharePrefs.IS_INSTAGRAM_LOGIN) == false){
+                        showLoginDialog()
+                    }
                     Toast.makeText(this, "Media didn't found...", Toast.LENGTH_SHORT).show()
                 }
 
@@ -371,5 +375,10 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun showLoginDialog(){
+        val loginDialogue = LoginDialogue()
+        loginDialogue.show(supportFragmentManager , "login_dialogue")
     }
 }
