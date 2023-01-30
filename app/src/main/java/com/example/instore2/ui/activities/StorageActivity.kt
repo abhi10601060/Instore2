@@ -37,13 +37,14 @@ class StorageActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
+        loadDownloadedData()
+    }
+
+    private fun loadDownloadedData() {
         val repo = (application as InstoreApp).storageRepo
         storageViewModel = ViewModelProvider( this , StorageViewModelFactory(repo)).get(StorageViewModel::class.java)
 
         storageViewModel.loadStoredContent()
-
-
-
     }
 
     private fun checkStoragePermission() : Boolean{
@@ -70,6 +71,7 @@ class StorageActivity : AppCompatActivity() {
             200 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     Toast.makeText(this, "External Storage Permission Granted...", Toast.LENGTH_SHORT).show()
+                    loadDownloadedData()
                 }
             }
         }

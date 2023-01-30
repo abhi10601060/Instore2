@@ -8,28 +8,26 @@
     android:background="@color/background">
 
     <RelativeLayout
+        android:id="@+id/Logo_RL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Logo_RL"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="250dp"
-        >
+        android:layout_marginTop="170dp">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/logo_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:elevation="16dp"
-            app:cardCornerRadius="15dp"
-            android:id="@+id/logo_card"
             android:backgroundTint="@color/indigo"
-            >
+            android:elevation="16dp"
+            app:cardCornerRadius="15dp">
 
             <ImageView
+                android:id="@+id/start_activity_logo"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@mipmap/instore_logo"
-                android:id="@+id/start_activity_logo"/>
+                android:src="@mipmap/instore_logo" />
 
         </androidx.cardview.widget.CardView>
 
@@ -48,26 +46,26 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/txt_video_and_story"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/app_name"
-            android:text="Video and Story"
-            android:textSize="22dp"
-            android:textColor="@color/white"
-            android:id="@+id/txt_video_and_story"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/arima_madurai"
-            android:layout_marginTop="15dp"/>
+            android:text="Video and Story"
+            android:textColor="@color/white"
+            android:textSize="22dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_video_and_story"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/arima_madurai"
             android:text="downloader for Instagram"
             android:textColor="@color/white"
-            android:textSize="22dp"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="@font/arima_madurai"/>
+            android:textSize="22dp" />
 
     </RelativeLayout>
 
