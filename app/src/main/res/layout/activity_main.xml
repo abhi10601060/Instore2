@@ -26,12 +26,18 @@
             app:title="InStash"
             app:titleTextColor="@color/white"/>
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stories_RL"
+            android:layout_below="@+id/toolbar"
+            android:visibility="visible">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_profile_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_below="@+id/toolbar"
+
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:src="@mipmap/ic_launcher"
@@ -69,12 +75,13 @@
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+        </RelativeLayout>
 
         <EditText
             android:id="@+id/edt_search_url_bar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_below="@+id/txt_user_name"
+            android:layout_below="@+id/stories_RL"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="18dp"
             android:layout_marginRight="40dp"
