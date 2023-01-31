@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="170dp">
+        android:layout_marginTop="120dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/logo_card"
@@ -79,13 +79,14 @@
         android:elevation="16dp"
         android:text="Login via Instagram"
         android:textColor="@color/white"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_alignBottom="@+id/login_button"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
         app:SpinKit_Style="MultiplePulse"
         app:SpinKit_Color="@color/indigo"
         android:id="@+id/login_progress_bar"/>
@@ -96,7 +97,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="110dp"
-        android:id="@+id/or_RL">
+        android:id="@+id/or_RL"
+        android:visibility="gone">
 
         <View
             android:id="@+id/first_or_line"
@@ -133,7 +135,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
         android:layout_centerHorizontal="true"
-        android:id="@+id/without_login_RL">
+        android:id="@+id/without_login_RL"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/txt_of_without_login"

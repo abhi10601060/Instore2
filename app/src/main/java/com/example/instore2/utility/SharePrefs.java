@@ -78,7 +78,7 @@ public class SharePrefs {
         }
         else{
             for (int i=0 ; i<recent_searches.size() ; i++){
-                if (user.getPk() == recent_searches.get(i).getPk()){
+                if (user.getUsername().equals(recent_searches.get(i).getUsername())){
                     recent_searches.remove(i);
                 }
             }

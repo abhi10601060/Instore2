@@ -108,7 +108,7 @@ class MediaRepo(private val sharePrefs: SharePrefs , private val api : InstaServ
     val recentSearches : LiveData<ArrayList<UserModel>>
     get() = recentSearchLivedata
 
-    fun addRecentSearch(owner : Long , search : UserModel){
+    fun addRecentSearch(search : UserModel){
         sharePrefs.putRecentSearch(search)
         getRecentSearches()
     }

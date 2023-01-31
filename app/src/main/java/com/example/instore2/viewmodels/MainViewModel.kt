@@ -114,8 +114,8 @@ class MainViewModel(val repo : MediaRepo) : ViewModel() {
         repo.getRecentSearches()
     }
 
-    fun putRecentSearch(owner: Long , search : UserModel){
-        repo.addRecentSearch(owner, search)
+    fun putRecentSearch(search : UserModel){
+        repo.addRecentSearch(search)
     }
 
 //    ******************************************************************** Without Login *****************************************************

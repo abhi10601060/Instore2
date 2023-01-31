@@ -61,7 +61,6 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     lateinit var progressBar : SpinKitView
     lateinit var storiesRelativeLayout : RelativeLayout
     private var  mediaItemsAdapter : MediaItemsAdapter? = null
-    var currentUserID : Long = 1234
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -213,7 +212,6 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
                             .into(currentUserProfileImage)
 
                         currentUserProfileName.text = user.username.toString()
-                        currentUserID = user.pk
                     }
                 }
 
@@ -324,8 +322,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             val manager = (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager)
             manager.enqueue(request)
             Toast.makeText(this, "Downloading started...", Toast.LENGTH_SHORT).show()
-            viewModel.putRecentSearch(currentUserID , user)
-            Log.d("RECENT", "onDownloadButtonClicked: $currentUserID")
+            viewModel.putRecentSearch(user)
         }
         else{
             askStoragePermissions()

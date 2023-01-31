@@ -81,6 +81,8 @@ class DummyStartActivity : AppCompatActivity() {
                 launch(Dispatchers.Main) {
                     progressBar.visibility = View.GONE
                     loginButton.visibility = View.VISIBLE
+                    orRelativeLayout.visibility = View.VISIBLE
+                    withoutLoginRL.visibility = View.VISIBLE
                 }
             }
         }
@@ -97,6 +99,7 @@ class DummyStartActivity : AppCompatActivity() {
 //        }
 
         withoutLoginButton.setOnClickListener(View.OnClickListener {
+            (application as InstoreApp).createRepo()
             val intent = Intent(this@DummyStartActivity , MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
