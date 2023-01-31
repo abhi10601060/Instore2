@@ -60,7 +60,6 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     lateinit var downloadAllButton : Button
     lateinit var progressBar : SpinKitView
     lateinit var storiesRelativeLayout : RelativeLayout
-    lateinit var logoutButton : ActionMenuItem
     private var  mediaItemsAdapter : MediaItemsAdapter? = null
     var currentUserID : Long = 1234
 
@@ -77,7 +76,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
 
         checkCurrentUser()
 
-        if (!SharePrefs.getInstance(this).getBoolean(SharePrefs.IS_INSTAGRAM_LOGIN)){
+        if (SharePrefs.getInstance(this).getBoolean(SharePrefs.IS_INSTAGRAM_LOGIN)){
             viewModel.getCurrentUser()
             setCurrentUser()
             viewModel.getStories()
@@ -136,6 +135,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
             else{
                 launch(Dispatchers.Main) {
                    storiesRelativeLayout.visibility = View.GONE
+                    progressBar.visibility = View.GONE
                     SharePrefs.getInstance(this@MainActivity).logout()
                 }
             }
@@ -168,6 +168,12 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.storage_menu, menu)
+        val logoutButton = menu?.findItem(R.id.logout_btn)
+
+        if (SharePrefs.getInstance(this).getBoolean(SharePrefs.IS_INSTAGRAM_LOGIN)){
+            logoutButton?.setVisible(true)
+        }
+
         return true
     }
 
