@@ -31,6 +31,7 @@ class DummyStartActivity : AppCompatActivity() {
     lateinit var progressBar : SpinKitView
     lateinit var withoutLoginButton : TextView
     lateinit var withoutLoginRL : RelativeLayout
+    lateinit var orRelativeLayout : RelativeLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,7 @@ class DummyStartActivity : AppCompatActivity() {
         if (intent != null){
             if (intent.getStringExtra("purpose").equals("login")){
                 withoutLoginRL.visibility = View.GONE
+                orRelativeLayout.visibility = View.GONE
             }
         }
 
@@ -107,6 +109,7 @@ class DummyStartActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.login_progress_bar)
         withoutLoginButton = findViewById(R.id.txt_without_login_btn)
         withoutLoginRL = findViewById(R.id.without_login_RL)
+        orRelativeLayout = findViewById(R.id.or_RL)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

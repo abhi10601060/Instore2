@@ -57,7 +57,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:text="The post you are trying to access might be private.\nIn order to access the post you need to login Instagram.\n\nAre you sure you want to login via Instagram."
+            android:text="The post you are trying to access might be private. In order to access the post you need to login Instagram.\n\nAre you sure you want to login via Instagram."
             android:textColor="@color/white"
             android:textSize="15dp" />
 

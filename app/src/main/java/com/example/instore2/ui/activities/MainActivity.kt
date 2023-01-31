@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.ActionMenuItem
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     lateinit var downloadAllButton : Button
     lateinit var progressBar : SpinKitView
     lateinit var storiesRelativeLayout : RelativeLayout
+    lateinit var logoutButton : ActionMenuItem
     private var  mediaItemsAdapter : MediaItemsAdapter? = null
     var currentUserID : Long = 1234
 
@@ -75,10 +77,13 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
 
         checkCurrentUser()
 
-        viewModel.getCurrentUser()
-        setCurrentUser()
-        viewModel.getStories()
-        setStories()
+        if (!SharePrefs.getInstance(this).getBoolean(SharePrefs.IS_INSTAGRAM_LOGIN)){
+            viewModel.getCurrentUser()
+            setCurrentUser()
+            viewModel.getStories()
+            setStories()
+        }
+
         setMediaItem()
         viewModel.getRecentSearches()
         setRecentVisits()
@@ -138,27 +143,8 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
     }
 
     private fun handleIntent(incomingUrl: String?) {
-        if(incomingUrl != null){
-            GlobalScope.launch(Dispatchers.IO) {
-                val response = viewModel.currentUserCheck()
-                if (response.isSuccessful){
-                    launch(Dispatchers.Main) {
-                        searchBar.setText(incomingUrl)
-                        btnPreview.callOnClick()
-                    }
-                }
-                else{
-                    launch(Dispatchers.Main) {
-                        Toast.makeText(this@MainActivity, "Couldn't find current user...", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@MainActivity , DummyStartActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-            }
-        }
-
+        searchBar.setText(incomingUrl)
+        btnPreview.callOnClick()
     }
 
     private fun setRecentVisits() {
@@ -394,5 +380,15 @@ class MainActivity : AppCompatActivity() , StoriesAdapter.StoryIconClicked , Med
         searchBar.setText(SharePrefs.getInstance(this).getString(SharePrefs.INCOMING_URL))
         btnPreview.callOnClick()
         SharePrefs.getInstance(this).putString(SharePrefs.INCOMING_URL , "")
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        if (intent != null){
+            if (intent.action.equals(Intent.ACTION_SEND) && intent.type.equals("text/plain")){
+                handleIntent(intent.getStringExtra(Intent.EXTRA_TEXT))
+            }
+        }
     }
 }

@@ -82,7 +82,7 @@ class MainViewModel(val repo : MediaRepo) : ViewModel() {
     fun getUrlMediaItems(rawUrl : String){
         val url = getJsonUrl(rawUrl)
         Log.d("STORY", "onCreate: $url")
-        Log.d("PREVIEW", "onCreate: $url")
+        Log.d("PREVIEW", "onCreate login: $url")
         viewModelScope.launch(Dispatchers.IO) {
             repo.getUrlMediaItem(url)
         }
@@ -121,6 +121,7 @@ class MainViewModel(val repo : MediaRepo) : ViewModel() {
 //    ******************************************************************** Without Login *****************************************************
 
     fun handleEnteredLinkWithoutLogin(rawUrl : String){
+        Log.d("WITHOUT", "handleEnteredLinkWithoutLogin: called ")
         if (!rawUrl.contains("/p/") && !rawUrl.contains("/reel/") && !rawUrl.contains("/stories/") && !rawUrl.contains("/tv/")){
             getUserMedia(rawUrl)
         }
