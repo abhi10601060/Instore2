@@ -39,13 +39,6 @@ class DummyStartActivity : AppCompatActivity() {
 
         initViews()
 
-        if (intent != null){
-            if (intent.getStringExtra("purpose").equals("login")){
-                withoutLoginRL.visibility = View.GONE
-                orRelativeLayout.visibility = View.GONE
-            }
-        }
-
         val repo = (application as InstoreApp).mediaRepo
         viewModel = ViewModelProvider(this , MainViewModelFactory(repo)).get(MainViewModel::class.java)
 
@@ -67,26 +60,36 @@ class DummyStartActivity : AppCompatActivity() {
 //            }
 //        })
 
-        GlobalScope.launch(Dispatchers.IO){
-            val response = viewModel.currentUserCheck()
-            if (response.isSuccessful){
-                launch(Dispatchers.Main) {
-                    Log.d("ACTIVITY", "onCreate:  called")
-                    val intent = Intent(this@DummyStartActivity , MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                }
+        if (intent != null){
+            if (intent.getStringExtra("purpose").equals("login")){
+                progressBar.visibility = View.GONE
+                loginButton.visibility = View.VISIBLE
+                withoutLoginRL.visibility = View.GONE
+                orRelativeLayout.visibility = View.GONE
             }
             else{
-                launch(Dispatchers.Main) {
-                    progressBar.visibility = View.GONE
-                    loginButton.visibility = View.VISIBLE
-                    orRelativeLayout.visibility = View.VISIBLE
-                    withoutLoginRL.visibility = View.VISIBLE
+                GlobalScope.launch(Dispatchers.IO){
+                    val response = viewModel.currentUserCheck()
+                    if (response.isSuccessful){
+                        launch(Dispatchers.Main) {
+                            Log.d("ACTIVITY", "onCreate:  called")
+                            val intent = Intent(this@DummyStartActivity , MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                        }
+                    }
+                    else{
+                        launch(Dispatchers.Main) {
+                            SharePrefs.getInstance(this@DummyStartActivity).logout()
+                            progressBar.visibility = View.GONE
+                            loginButton.visibility = View.VISIBLE
+                            orRelativeLayout.visibility = View.VISIBLE
+                            withoutLoginRL.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
         }
-
 
         loginButton.setOnClickListener(View.OnClickListener {
             startActivityForResult(Intent(this , LoginActivity::class.java) , 100)
