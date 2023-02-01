@@ -37,7 +37,8 @@ class StorageRepo {
             }
         }
         if (imagePosts != null){
-            photosLiveData.postValue(imagePosts.toMutableList())
+            val sortedImagePosts  = imagePosts.sortedByDescending { it.lastModified() }
+            photosLiveData.postValue(sortedImagePosts.toMutableList())
         }
     }
 
@@ -59,7 +60,8 @@ class StorageRepo {
             }
         }
         if (videosMedia != null) {
-            videosLivedata.postValue(videosMedia.toMutableList())
+            val sortedVideoMedia  = videosMedia.sortedByDescending { it.lastModified() }
+            videosLivedata.postValue(sortedVideoMedia.toMutableList())
         }
 
     }
